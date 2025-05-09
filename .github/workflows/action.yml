@@ -1,13 +1,24 @@
-name: "Setup MyCLI"
-description: "Installs MyCLI and adds it to the PATH"
-author: "Your Name"
+name: "Setup MyCLI Workflow"
 
-inputs:
-  version:
-    description: "The CLI version to install"
-    required: false
-    default: "latest"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-runs:
-  using: "node16"
-  main: "index.js"
+jobs:
+  setup-my-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install and run MyCLI
+        run: |
+          npm install -g my-cli
+          my-cli --version
